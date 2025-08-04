@@ -19,14 +19,27 @@ def process_subdirectories(directory_path, extensions):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Count total lines of code in a directory.")
-    parser.add_argument("directory", help="Path to the directory to scan")
-    parser.add_argument("--ext", nargs="+", default=[".py", ".swift"],
-                        help="File extensions to include (e.g., --ext .py .swift)")
+    parser = argparse.ArgumentParser(
+        description="Count total lines of code in a directory.",
+        epilog="Example: python main.py /my/code --ext .py .cs .js"
+    )
+    parser.add_argument("directory", nargs="?", help="Path to the directory to scan")
+    parser.add_argument("--ext", nargs="+", default=[".py", ".cs"],
+                        help="File extensions to include (e.g., --ext .py .cs)")
+
     args = parser.parse_args()
+
+    if not args.directory:
+        parser.print_help()
+        sys.exit(0)
 
     count_total_lines(args.directory, args.ext)
 
 if __name__ == "__main__":
-    main()
-    print("Finished!")
+    try:
+        main()
+        print("Finished!")
+    except SystemExit as e:
+        if e.code == 2: 
+            sys.exit(2)
+
