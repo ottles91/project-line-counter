@@ -1,16 +1,18 @@
 # 📊 Line Counter
 
-A simple Python command-line tool to **count total lines of code** in a directory.  
-Supports multiple file extensions so you can count lines across languages like Python, C#, JavaScript, etc.
+A Python command-line tool to **count total lines of code** in a directory.
 
 ---
 
 ## 🚀 Features
 
-- Recursively scans a directory and its subdirectories
+- Scans a directory and its subdirectories
 - Supports **multiple file extensions** (e.g. `.py`, `.cs`, `.js`, `.swift`)
-- Skips unreadable files
-- Easy to extend or customize
+- Counts all files if no `--ext` argument is provided
+- Optionally include hidden files and directories with `--include-hidden`
+- Skips unreadable or binary files
+- Provides a **breakdown of lines by file type**
+- Reports the number of skipped non-text/binary files
 
 ---
 
@@ -29,24 +31,47 @@ git clone https://github.com/ottles91/project-line-counter
 cd line-counter
 ```
 
-## ▶️ Usage
+## ▶️ Example Usage
 
-Basic usage (count .py and .cs files in a directory):
+Basic usage (count all text-based files in a given directory):
 
 ```bash
-python lineCounter.py /path/to/project
+python3 lineCounter.py /path/to/project
 ```
 
-Specify one or more file extensions:
+Count lines for all Python, Swift and JavaScript files:
 
 ```bash
-python lineCounter.py /path/to/project --ext .py .swift .js
+python3 lineCounter.py /path/to/project --ext .py .swift .js
+```
+
+Include hidden files & folders:
+
+```bash
+python3 lineCounter.py /path/to/project --include-hidden
 ```
 
 See help:
 
 ```bash
-python main.py -h
+python3 lineCounter.py -h
+```
+
+## Example Output
+
+```
+Counting total lines of code in ./my_project...
+
+Total lines of code: 2500
+
+Lines by file type:
+.css: 667
+.html: 2204
+.js: 91
+.md: 43
+No Extension: 30
+
+Skipped 10 non-text/binary files.
 ```
 
 ## 📜 License
