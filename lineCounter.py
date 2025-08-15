@@ -4,7 +4,7 @@ import argparse
 
 def count_total_lines(directory_path, extensions=None, include_hidden=False):
     print(f"Counting total lines of code in {directory_path}...")
-    total_lines, lines_by_type = process_subdirectories(directory_path, extensions, include_hidden)
+    total_lines, lines_by_type, skipped_files = process_subdirectories(directory_path, extensions, include_hidden)
 
     print(f"\nTotal lines of code: {total_lines}\n")
 
@@ -13,9 +13,13 @@ def count_total_lines(directory_path, extensions=None, include_hidden=False):
         for ext, count in lines_by_type.items():
             print(f"{ext}: {count}")
 
+    if skipped_files:
+        print(f"\nSkipped {len(skipped_files)} non-text/binary files.")
+
 def process_subdirectories(directory_path, extensions=None, include_hidden=False):
     total_lines = 0
     lines_by_type = {}
+    skipped_files = []
 
     for root, dirs, files in os.walk(directory_path):
         if not include_hidden:
@@ -41,8 +45,10 @@ def process_subdirectories(directory_path, extensions=None, include_hidden=False
                     total_lines += num_lines
                     lines_by_type[ext_match] = lines_by_type.get(ext_match, 0) + num_lines
             except (UnicodeDecodeError, OSError):
+                skipped_files.append(file_path)
                 continue
-    return total_lines, lines_by_type
+
+    return total_lines, lines_by_type, skipped_files
 
 def main():
     parser = argparse.ArgumentParser(
