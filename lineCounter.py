@@ -10,8 +10,13 @@ def count_total_lines(directory_path, extensions=None, include_hidden=False):
 
     if lines_by_type:
         print("Lines by file type:")
-        for ext, count in lines_by_type.items():
-            print(f"{ext}: {count}")
+        no_ext_count = lines_by_type.pop("No Extension", None)
+
+        for ext in sorted(lines_by_type):
+            print(f"{ext}: {lines_by_type[ext]}")
+
+        if no_ext_count is not None:
+            print(f"No Extension: {no_ext_count}")
 
     if skipped_files:
         print(f"\nSkipped {len(skipped_files)} non-text/binary files.")
