@@ -25,7 +25,7 @@ Supports multiple file extensions so you can count lines across languages like P
 Clone this repository:
 
 ```bash
-git clone https://github.com/<your-username>/line-counter.git
+git clone https://github.com/ottles91/project-line-counter
 cd line-counter
 ```
 
