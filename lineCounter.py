@@ -28,7 +28,7 @@ def process_subdirectories(directory_path, extensions=None, include_hidden=False
             if extensions is None:
                 ext_match = os.path.splitext(file)[1].lower()
                 if ext_match == "":
-                    ext_match = "no_ext"
+                    ext_match = "No Extension"
             else:
                 ext_match = next((ext for ext in extensions if file.lower().endswith(ext)), None)
                 if ext_match is None:
