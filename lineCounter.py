@@ -35,13 +35,14 @@ def process_subdirectories(directory_path, extensions=None, include_hidden=False
                     continue
 
             file_path = os.path.join(root, file)
-            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                num_lines = len(f.readlines())
-                total_lines += num_lines
-                lines_by_type[ext_match] = lines_by_type.get(ext_match, 0) + num_lines
-
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    num_lines = len(f.readlines())
+                    total_lines += num_lines
+                    lines_by_type[ext_match] = lines_by_type.get(ext_match, 0) + num_lines
+            except (UnicodeDecodeError, OSError):
+                continue
     return total_lines, lines_by_type
-
 
 def main():
     parser = argparse.ArgumentParser(
