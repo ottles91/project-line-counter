@@ -24,7 +24,7 @@ A Python command-line tool to **count total lines of code** in a directory.
 
 ## 📦 Installation
 
-Clone this repository:
+Clone the repository:
 
 ```bash
 git clone https://github.com/ottles91/project-line-counter
@@ -43,6 +43,24 @@ Count lines for all Python, Swift and JavaScript files:
 
 ```bash
 python3 lineCounter.py /path/to/project --ext .py .swift .js
+```
+
+Count lines from all files except for `.css` files:
+
+```bash
+python3 lineCounter.py /path/to/project --exclude-ext .css
+```
+
+Count all files but skip certain directories:
+
+```bash
+python3 lineCounter.py /path/to/project --exclude node_modules venv
+```
+
+Combine directory and extension exclusion:
+
+```bash
+python3 lineCounter.py /path/to/project --exclude node_modules build --exclude-ext .txt .json
 ```
 
 Include hidden files & folders:
