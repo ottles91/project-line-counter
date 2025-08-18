@@ -2,10 +2,10 @@ import os
 import sys
 import argparse
 
-def count_total_lines(directory_path, extensions=None, include_hidden=False, excludes=None):
+def count_total_lines(directory_path, extensions=None, include_hidden=False, excludes=None, exclude_exts=None):
     print(f"Counting total lines of code in {directory_path}...")
     total_lines, lines_by_type, skipped_files = process_subdirectories(
-        directory_path, extensions, include_hidden, excludes
+        directory_path, extensions, include_hidden, excludes, exclude_exts
     )
 
     print(f"\nTotal lines of code: {total_lines}\n")
@@ -23,9 +23,11 @@ def count_total_lines(directory_path, extensions=None, include_hidden=False, exc
     if skipped_files:
         print(f"\nSkipped {len(skipped_files)} non-text/binary files.")
 
-def process_subdirectories(directory_path, extensions=None, include_hidden=False, excludes=None):
+def process_subdirectories(directory_path, extensions=None, include_hidden=False, excludes=None, exclude_exts=None):
     if excludes is None:
         excludes = []
+    if exclude_exts is None:
+        exclude_exts = []
 
     total_lines = 0
     lines_by_type = {}
@@ -46,6 +48,10 @@ def process_subdirectories(directory_path, extensions=None, include_hidden=False
 
             # Skip excluded files
             if file in excludes:
+                continue
+
+            # Skip excluded extensions (only matters if no --ext provided)
+            if extensions is None and any(file.lower().endswith(ext) for ext in exclude_exts):
                 continue
 
             # Extension filtering
@@ -81,8 +87,13 @@ def main():
     parser.add_argument("--include-hidden", action="store_true",
                         help="Include hidden files and directories (default: false)")
     parser.add_argument(
-    "--exclude", nargs="+", default=[],
-    help="Directories or files to exclude (e.g., --exclude node_modules venv bigfile.log)"
+        "--exclude", nargs="+", default=[],
+        help="Directories or files to exclude (e.g., --exclude node_modules venv README.md)"
+    )
+
+    parser.add_argument(
+        "--exclude-ext", nargs="+", default=[],
+        help="File extensions to exclude when scanning all files (e.g., --exclude-ext .log .csv)"
     )
     args = parser.parse_args()
 
@@ -90,7 +101,7 @@ def main():
         parser.print_help()
         sys.exit(0)
 
-    count_total_lines(args.directory, args.ext, args.include_hidden, args.exclude)
+    count_total_lines(args.directory, args.ext, args.include_hidden, args.exclude, args.exclude_ext)
 
 if __name__ == "__main__":
     try:
