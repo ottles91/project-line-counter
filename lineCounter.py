@@ -2,9 +2,11 @@ import os
 import sys
 import argparse
 
-def count_total_lines(directory_path, extensions=None, include_hidden=False):
+def count_total_lines(directory_path, extensions=None, include_hidden=False, excludes=None):
     print(f"Counting total lines of code in {directory_path}...")
-    total_lines, lines_by_type, skipped_files = process_subdirectories(directory_path, extensions, include_hidden)
+    total_lines, lines_by_type, skipped_files = process_subdirectories(
+        directory_path, extensions, include_hidden, excludes
+    )
 
     print(f"\nTotal lines of code: {total_lines}\n")
 
@@ -21,19 +23,32 @@ def count_total_lines(directory_path, extensions=None, include_hidden=False):
     if skipped_files:
         print(f"\nSkipped {len(skipped_files)} non-text/binary files.")
 
-def process_subdirectories(directory_path, extensions=None, include_hidden=False):
+def process_subdirectories(directory_path, extensions=None, include_hidden=False, excludes=None):
+    if excludes is None:
+        excludes = []
+
     total_lines = 0
     lines_by_type = {}
     skipped_files = []
 
     for root, dirs, files in os.walk(directory_path):
+        # Remove hidden directories if not included
         if not include_hidden:
             dirs[:] = [d for d in dirs if not d.startswith('.')]
 
+        # Apply directory exclusions
+        dirs[:] = [d for d in dirs if d not in excludes]
+
         for file in files:
+            # Skip hidden files if not included
             if not include_hidden and file.startswith('.'):
                 continue
 
+            # Skip excluded files
+            if file in excludes:
+                continue
+
+            # Extension filtering
             if extensions is None:
                 ext_match = os.path.splitext(file)[1].lower()
                 if ext_match == "":
@@ -65,14 +80,17 @@ def main():
                         help="File extensions to include (e.g., --ext .py .cs). If not provided, all files are counted.")
     parser.add_argument("--include-hidden", action="store_true",
                         help="Include hidden files and directories (default: false)")
-
+    parser.add_argument(
+    "--exclude", nargs="+", default=[],
+    help="Directories or files to exclude (e.g., --exclude node_modules venv bigfile.log)"
+    )
     args = parser.parse_args()
 
     if not args.directory:
         parser.print_help()
         sys.exit(0)
 
-    count_total_lines(args.directory, args.ext, args.include_hidden)
+    count_total_lines(args.directory, args.ext, args.include_hidden, args.exclude)
 
 if __name__ == "__main__":
     try:
