@@ -1,8 +1,6 @@
-# 📊 Line Counter
+# 📊 Project Line Counter
 
-A Python command-line tool to **count total lines of code** in a directory.
-
----
+Project Line Counter is a lightweight Python command-line utility designed to help developers quickly analyze the size and structure of their codebases. It recursively scans a project directory, counts lines of code across multiple file types, and provides both a **total line count** and a **breakdown by file extension**. With options to include or exclude hidden files, skip specific directories or file types, and ignore non-text/binary files, it's a flexible tool for getting a clearer picture of your project's composition without the overhead of a full-featured code metrics suite.
 
 ## 🚀 Features
 
