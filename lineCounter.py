@@ -23,6 +23,15 @@ def get_extension(file):
     ext = os.path.splitext(file)[1].lower()
     return ext if ext else "No Extension"
 
+
+def count_lines_in_file(file_path):
+    """Return number of lines in a text file, or None if unreadable/binary."""
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            return len(f.readlines())
+    except (UnicodeDecodeError, OSError):
+        return None
+
 def count_total_lines(directory_path, extensions=None, include_hidden=False, excludes=None, exclude_exts=None):
     print(f"Counting total lines of code in {directory_path}...")
     total_lines, lines_by_type, skipped_files = process_subdirectories(
