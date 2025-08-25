@@ -2,6 +2,22 @@ import os
 import sys
 import argparse
 
+# ---------------------------
+# Helpers
+# ---------------------------
+
+def should_skip_file(file, extensions, include_hidden, excludes, exclude_exts):
+    """Return True if the file should be skipped based on rules."""
+    if not include_hidden and file.startswith('.'):
+        return True
+    if file in excludes:
+        return True
+    if extensions is None and any(file.lower().endswith(ext) for ext in exclude_exts):
+        return True
+    if extensions is not None and not any(file.lower().endswith(ext) for ext in extensions):
+        return True
+    return False
+
 def count_total_lines(directory_path, extensions=None, include_hidden=False, excludes=None, exclude_exts=None):
     print(f"Counting total lines of code in {directory_path}...")
     total_lines, lines_by_type, skipped_files = process_subdirectories(
