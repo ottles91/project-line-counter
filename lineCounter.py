@@ -18,6 +18,11 @@ def should_skip_file(file, extensions, include_hidden, excludes, exclude_exts):
         return True
     return False
 
+def get_extension(file):
+    """Return normalized extension, or 'No Extension' if missing."""
+    ext = os.path.splitext(file)[1].lower()
+    return ext if ext else "No Extension"
+
 def count_total_lines(directory_path, extensions=None, include_hidden=False, excludes=None, exclude_exts=None):
     print(f"Counting total lines of code in {directory_path}...")
     total_lines, lines_by_type, skipped_files = process_subdirectories(
