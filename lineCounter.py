@@ -67,6 +67,29 @@ def process_subdirectories(directory_path, extensions=None, include_hidden=False
 
     return total_lines, lines_by_type, skipped_files
 
+
+def count_total_lines(directory_path, extensions=None, include_hidden=False, excludes=None, exclude_exts=None):
+    """Run the scan and print results in a human-readable way."""
+    print(f"Counting total lines of code in {directory_path}...")
+    total_lines, lines_by_type, skipped_files = process_subdirectories(
+        directory_path, extensions, include_hidden, excludes, exclude_exts
+    )
+
+    print(f"\nTotal lines of code: {total_lines}\n")
+
+    if lines_by_type:
+        print("Lines by file type:")
+        no_ext_count = lines_by_type.pop("No Extension", None)
+
+        for ext in sorted(lines_by_type):
+            print(f"{ext}: {lines_by_type[ext]}")
+
+        if no_ext_count is not None:
+            print(f"No Extension: {no_ext_count}")
+
+    if skipped_files:
+        print(f"\nSkipped {len(skipped_files)} non-text/binary files.")
+
 # def count_total_lines(directory_path, extensions=None, include_hidden=False, excludes=None, exclude_exts=None):
 #     print(f"Counting total lines of code in {directory_path}...")
 #     total_lines, lines_by_type, skipped_files = process_subdirectories(
