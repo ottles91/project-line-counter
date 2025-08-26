@@ -91,43 +91,43 @@ cd line-counter
 Basic usage (count all text-based files in a given directory):
 
 ```bash
-python3 lineCounter.py /path/to/project
+python3 -m LineCounter /path/to/project
 ```
 
 Count lines for all Python, Swift and JavaScript files:
 
 ```bash
-python3 lineCounter.py /path/to/project --ext .py .swift .js
+python3 -m LineCounter /path/to/project --ext .py .swift .js
 ```
 
 Count lines from all files except for `.css` files:
 
 ```bash
-python3 lineCounter.py /path/to/project --exclude-ext .css
+python3 -m LineCounter /path/to/project --exclude-ext .css
 ```
 
 Count all files but skip certain directories:
 
 ```bash
-python3 lineCounter.py /path/to/project --exclude node_modules venv
+python3 -m LineCounter /path/to/project --exclude node_modules venv
 ```
 
 Combine directory and extension exclusion:
 
 ```bash
-python3 lineCounter.py /path/to/project --exclude node_modules build --exclude-ext .txt .json
+python3 -m LineCounter /path/to/project --exclude node_modules build --exclude-ext .txt .json
 ```
 
 Include hidden files & folders:
 
 ```bash
-python3 lineCounter.py /path/to/project --include-hidden
+python3 -m LineCounter /path/to/project --include-hidden
 ```
 
 See help:
 
 ```bash
-python3 lineCounter.py -h
+python3 -m LineCounter -h
 ```
 
 ## Example Output
